@@ -301,7 +301,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
       {alert}
       <Header as="h2" icon>
         <Icon name="users" />
-        WebRTC Chat App
+        Chat App
       </Header>
       {(socketOpen && (
         <Fragment>
