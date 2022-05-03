@@ -15,6 +15,12 @@ import UsersList from "./UsersList";
 import MessageBox from "./MessageBox";
 
 // Use for remote connections
+/**
+ * ICE - Interactive Connectivity Establishment
+ *  - It helps client coordinate the discovery of their public-facing IP
+ * STUN - Session Traversal Utilities for NAT
+ *   - The STUN server enables clients to find out their public IP address, NAT type, and the Internet-facing port associated by the NAT device with a particular local port
+ */
 const configuration = {
   iceServers: [{ url: "stun:stun.1.google.com:19302" }],
 };
@@ -39,7 +45,22 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
   const [messages, setMessages] = useState({});
   const wsUrl = process.env.REACT_APP_WEBSOCKET_URL || "ws://localhost:9000";
 
+  /**
+   * WebSocket Connection Open, Send Message, onClose
+   *
+   *  STEP1 - new WebSocket(wsUrl)
+   *   - Creating a WebSocket Object/Conncetion
+   *
+   *  STEP2 - webSocket.current.onmessage -
+   *    - Parse the incoming message and update the UI
+   *
+   *   STEP3 - webSocket.current.send
+   *    - Send message other Peer
+   *
+   */
+
   useEffect(() => {
+    // HTML5 Websocket Connection
     webSocket.current = new WebSocket(wsUrl);
     webSocket.current.onmessage = (message) => {
       const data = JSON.parse(message.data);
@@ -142,7 +163,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
       //when the browser finds an ice candidate we send it to another peer
       localConnection.onicecandidate = ({ candidate }) => {
         let connectedTo = connectedRef.current;
-
+        console.log("onicecandidate connectedTo:", connectedTo);
         if (candidate && !!connectedTo) {
           send({
             name: connectedTo,
@@ -180,7 +201,8 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
   const onOffer = ({ offer, name }) => {
     setConnectedTo(name);
     connectedRef.current = name;
-
+    console.log("onOffer", offer);
+    console.log("name:", name);
     connection
       .setRemoteDescription(new RTCSessionDescription(offer))
       .then(() => connection.createAnswer())
@@ -206,11 +228,14 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
 
   //when another user answers to our offer
   const onAnswer = ({ answer }) => {
+    console.log("onAnswer:", answer);
+
     connection.setRemoteDescription(new RTCSessionDescription(answer));
   };
 
   //when we got ice candidate from another user
   const onCandidate = ({ candidate }) => {
+    console.log("onCandidate:", candidate);
     connection.addIceCandidate(new RTCIceCandidate(candidate));
   };
 
