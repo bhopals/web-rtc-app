@@ -27,15 +27,17 @@ Refercence - https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Wri
 
 ### RTCPeerConnection
 
+NOTE ==> Please refer `Chart.js`
+
 1. Create RTCPeerConnection
 
-``
+`
 const configuration = {
 iceServers: [{ url: "stun:stun.1.google.com:19302" }],
 };
 new RTCPeerConnection(configuration)
 
-``
+`
 Reference - https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection
 
 2. RTCPeerConnection==> onicecandidate
@@ -45,6 +47,8 @@ The majority of icecandidate events are fired to indicate that a new candidate h
 The RTCPeerConnection interface represents a WebRTC connection between the local computer and a remote peer. It provides methods to connect to a remote peer, maintain and monitor the connection, and close the connection once it's no longer needed.
 
 3. RTCSessionDescription
+
+`connection .setRemoteDescription(new RTCSessionDescription(offer)) .then(() => connection.createAnswer()) .then((answer) => connection.setLocalDescription(answer))`
 
 The RTCSessionDescription interface describes one end of a connection—or potential connection—and how it's configured. Each RTCSessionDescription consists of a description type indicating which part of the offer/answer negotiation process it describes and of the SDP descriptor of the session.
 The process of negotiating a connection between two peers involves exchanging RTCSessionDescription
