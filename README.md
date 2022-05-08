@@ -83,3 +83,11 @@ II. WebRTC App (Clients/Peers)
 ![RTCWeb App](https://github.com/bhopals/web-rtc-app/blob/main/chat-app.png)
 
 For code Review, Refer the repo [Chat App](https://github.com/bhopals/web-rtc-app). The `Chart.js` is the file that has RTCPeerConnection/RTCSessionDescription details.
+
+### Terminology
+
+- STUN Server
+- Ice candidates
+- Create an offer
+- create an answer
+-

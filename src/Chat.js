@@ -19,7 +19,8 @@ import MessageBox from "./MessageBox";
  * ICE - Interactive Connectivity Establishment
  *  - It helps client coordinate the discovery of their public-facing IP
  * STUN - Session Traversal Utilities for NAT
- *   - The STUN server enables clients to find out their public IP address, NAT type, and the Internet-facing port associated by the NAT device with a particular local port
+ *   - The STUN server enables clients to find out their public IP address, NAT type,
+ * and the Internet-facing port associated by the NAT device with a particular local port
  */
 const configuration = {
   iceServers: [{ url: "stun:stun.1.google.com:19302" }],
@@ -129,6 +130,11 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
 
   const handleDataChannelMessageReceived = ({ data }) => {
     const message = JSON.parse(data);
+    console.log(
+      "handleDataChannelMessageReceived>messageReceived>data>",
+      message
+    );
+
     const { name: user } = message;
     let messages = messagesRef.current;
     let userMessages = messages[user];
@@ -145,6 +151,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
   };
 
   const onLogin = ({ success, message, users: loggedIn }) => {
+    console.log("onLogin>message>", message);
     setLoggingIn(false);
     if (success) {
       setAlert(
@@ -243,6 +250,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
   const sendMsg = () => {
     const time = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
     let text = { time, message, name };
+    console.log("sendMsg>message>", message);
     let messages = messagesRef.current;
     let connectedTo = connectedRef.current;
     let userMessages = messages[connectedTo];
@@ -263,6 +271,8 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
   };
 
   const handleConnection = (name) => {
+    console.log("handleConnection>name>", name);
+
     var dataChannelOptions = {
       reliable: true,
     };
